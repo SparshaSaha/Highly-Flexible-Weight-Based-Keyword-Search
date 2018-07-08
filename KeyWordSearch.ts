@@ -1,22 +1,24 @@
-module Search {
-    export class KeyWordSearch<T> implements ISearch<T> {
+import { ObjectWithWeight } from "./ObjectWithWeight";
+import { SearchParameter } from "./SearchParameter";
 
-        public getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string): T[] {
-            let weightedObjects = this.generateWeightsForObjects(objectsToSearchIn, searchParameters, query);
+    export class KeyWordSearch<T> {
+
+        public  getSearchResults(objectsToSearchIn, searchParameters: SearchParameter[], query: string): T[] {
+            let weightedObjects = this.generateWeightsForObjects(objectsToSearchIn, searchParameters, query.toLowerCase());
             return this.sortObjectsOnWeight(weightedObjects);
         }
 
         // Generated weights for all objects
         // Filters objects with weight equalto 0
         // @returns weighted and filtered objects
-        public generateWeightsForObjects(objectsToSearchIn: T[],searchParameters: SearchParameter[], query: string): ObjectWithWeight<T>[] {
+        private generateWeightsForObjects(objectsToSearchIn,searchParameters: SearchParameter[], query: string): ObjectWithWeight<T>[] {
             
             let objectsWithWeight: ObjectWithWeight<T>[] = []; 
             for(let currentObject of objectsToSearchIn) {
                 let weightForCurrentObject: number = 0;
                 for(let currentParameter of searchParameters) {
-                    if (currentObject[currentParameter.getParameterName()]) {
-                        weightForCurrentObject += currentParameter.getParameterWeight();
+                    if (currentObject[currentParameter.parameterName].toLowerCase().includes(query)) {
+                        weightForCurrentObject += currentParameter.parameterWeight;
                     }
                 }
 
@@ -30,12 +32,12 @@ module Search {
 
         // Function to sort objects on the descending order of weights of weights
         // @returns unwrapped sorted objects
-        public sortObjectsOnWeight(objectsWithWeight: ObjectWithWeight<T>[]): T[] {
+        private sortObjectsOnWeight(objectsWithWeight: ObjectWithWeight<T>[]) {
             let sortedObjects = objectsWithWeight.sort(function(a, b) {
                 return b.weight - a.weight;
             });
 
-            let unwrappedObjects: T[] = [];
+            let unwrappedObjects = [];
 
             for (let currentObject of sortedObjects) {
                 unwrappedObjects.push(currentObject.object);
@@ -44,4 +46,3 @@ module Search {
             return unwrappedObjects; 
         }
     }
-}

@@ -1,3 +1,5 @@
+import { SearchParameter } from "./SearchParameter";
+
 module Search {
     export interface ISearch<T> {
         /*
@@ -6,6 +8,6 @@ module Search {
         @param query: String query to search for
         @return Weight wise sorted objects
         */
-        getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string): T[];
+        getSearchResults(objectsToSearchIn, searchParameters: SearchParameter[], query: string): T[];
     }
 }
