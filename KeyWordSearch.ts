@@ -47,7 +47,23 @@ export class KeyWordSearch<T> implements ISearch<T> {
         return unwrappedObjects; 
     }
 
-    private recursiveDepthFirstSearch() {
-
+    private recursiveDepthFirstSearch(objectToSearch, query: string, weightForMatch: number): number {
+        if (Array.isArray(objectToSearch)) {
+            let weight = 0;
+            for(let current of objectToSearch) {
+                weight += this.recursiveDepthFirstSearch(current, query, weight);
+            }
+            return weight;
+        } else if (typeof objectToSearch === 'object') {
+            let weight = 0;
+            for(let current in objectToSearch) {
+                weight += this.recursiveDepthFirstSearch(objectToSearch[current], query, weightForMatch);
+            }
+            return weight;
+        } else {
+            if (objectToSearch === query) {
+                return weightForMatch;
+            }
+        }
     }
 }
