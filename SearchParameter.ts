@@ -1,4 +1,3 @@
-
 export class SearchParameter {
     public parameterName: string;
     public parameterWeight: number;

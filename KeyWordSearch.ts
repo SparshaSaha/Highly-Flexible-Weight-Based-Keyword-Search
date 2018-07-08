@@ -1,9 +1,10 @@
 import { ObjectWithWeight } from "./ObjectWithWeight";
 import { SearchParameter } from "./SearchParameter";
+import { ISearch } from "./ISearch.interface";
 
-    export class KeyWordSearch<T> {
+    export class KeyWordSearch<T> implements ISearch<T> {
 
-        public  getSearchResults(objectsToSearchIn, searchParameters: SearchParameter[], query: string): T[] {
+        public  getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string): T[] {
             let weightedObjects = this.generateWeightsForObjects(objectsToSearchIn, searchParameters, query.toLowerCase());
             return this.sortObjectsOnWeight(weightedObjects);
         }
@@ -11,7 +12,7 @@ import { SearchParameter } from "./SearchParameter";
         // Generated weights for all objects
         // Filters objects with weight equalto 0
         // @returns weighted and filtered objects
-        private generateWeightsForObjects(objectsToSearchIn,searchParameters: SearchParameter[], query: string): ObjectWithWeight<T>[] {
+        private generateWeightsForObjects(objectsToSearchIn: T[],searchParameters: SearchParameter[], query: string): ObjectWithWeight<T>[] {
             
             let objectsWithWeight: ObjectWithWeight<T>[] = []; 
             for(let currentObject of objectsToSearchIn) {
@@ -32,7 +33,7 @@ import { SearchParameter } from "./SearchParameter";
 
         // Function to sort objects on the descending order of weights of weights
         // @returns unwrapped sorted objects
-        private sortObjectsOnWeight(objectsWithWeight: ObjectWithWeight<T>[]) {
+        private sortObjectsOnWeight(objectsWithWeight: ObjectWithWeight<T>[]): T[] {
             let sortedObjects = objectsWithWeight.sort(function(a, b) {
                 return b.weight - a.weight;
             });
