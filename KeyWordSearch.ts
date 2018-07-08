@@ -46,4 +46,8 @@ export class KeyWordSearch<T> implements ISearch<T> {
 
         return unwrappedObjects; 
     }
+
+    private recursiveDepthFirstSearch() {
+
+    }
 }
