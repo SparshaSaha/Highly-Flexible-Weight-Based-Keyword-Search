@@ -5,21 +5,24 @@ import { ISearch } from "./ISearch.interface";
 export class KeyWordSearch<T> implements ISearch<T> {
 
     public  getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string): T[] {
-        let weightedObjects = this.generateWeightsForObjects(objectsToSearchIn, searchParameters, query.toLowerCase());
+        let weightedObjects = this.generateWeightsForObjects(objectsToSearchIn, searchParameters, query.toLowerCase().split(' '));
         return this.sortObjectsOnWeight(weightedObjects);
     }
 
     // Generated weights for all objects
     // Filters objects with weight equalto 0
     // @returns weighted and filtered objects
-    private generateWeightsForObjects(objectsToSearchIn: T[],searchParameters: SearchParameter[], query: string): ObjectWithWeight<T>[] {
+    private generateWeightsForObjects(objectsToSearchIn: T[],searchParameters: SearchParameter[], tokenizedQuery: string[]): ObjectWithWeight<T>[] {
             
         let objectsWithWeight: ObjectWithWeight<T>[] = []; 
         for(let currentObject of objectsToSearchIn) {
             let weightForCurrentObject: number = 0;
             for(let currentParameter of searchParameters) {
-                if (currentObject[currentParameter.parameterName].toLowerCase().includes(query)) {
-                    weightForCurrentObject += currentParameter.parameterWeight;
+                let tokenizedParameter: string[] = currentObject[currentParameter.parameterName].toLowerCase().split(' ')
+                weightForCurrentObject += this.keyWordMatch(tokenizedQuery, tokenizedParameter) * currentParameter.parameterWeight;
+        
+                if (tokenizedParameter.join('').includes(tokenizedQuery.join(''))) {
+                    weightForCurrentObject += 1;
                 }
             }
 
@@ -29,6 +32,21 @@ export class KeyWordSearch<T> implements ISearch<T> {
             }
         }
         return objectsWithWeight;
+    }
+
+    private keyWordMatch(tokenizedQuery: string[], tokenizedObjectParameter: string[]): number {
+        let hashedWords = {};
+        for (let queryWord of tokenizedQuery) {
+            hashedWords[queryWord] = true;
+        }
+
+        let matchCount: number = 0;
+        for (let currentWord of tokenizedObjectParameter) {
+            if (hashedWords[currentWord] == true) {
+                matchCount++;
+            }
+        }
+        return matchCount;
     }
 
     // Function to sort objects on the descending order of weights of weights
