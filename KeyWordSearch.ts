@@ -24,13 +24,6 @@ export class KeyWordSearch<T> implements ISearch<T> {
         for(let currentObject of objectsToSearchIn) {
             let weightForCurrentObject: number = 0;
             for(let currentParameter of searchParameters) {
-                /*let tokenizedParameter: string[] = currentObject[currentParameter.parameterName].toLowerCase().split(' ')
-                weightForCurrentObject += this.keyWordMatch(tokenizedQuery, tokenizedParameter) * currentParameter.parameterWeight;
-        
-                if (tokenizedParameter.join('').includes(tokenizedQuery.join(''))) {
-                    weightForCurrentObject += 1;
-                }*/
-                console.log( this.recursiveDepthFirstSearch(currentObject[currentParameter.parameterName], tokenizedQuery, currentParameter.parameterWeight));
                 weightForCurrentObject += this.recursiveDepthFirstSearch(currentObject[currentParameter.parameterName], tokenizedQuery, currentParameter.parameterWeight);
             }
 
@@ -54,7 +47,6 @@ export class KeyWordSearch<T> implements ISearch<T> {
                 matchCount++;
             }
         }
-        console.log("Match count "+matchCount);
         return matchCount;
     }
 
