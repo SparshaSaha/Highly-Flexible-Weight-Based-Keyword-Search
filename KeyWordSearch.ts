@@ -3,9 +3,15 @@ import { SearchParameter } from "./SearchParameter";
 import { ISearch } from "./ISearch.interface";
 
 export class KeyWordSearch<T> implements ISearch<T> {
+    private regExp: RegExp;
+    constructor(regExp?: RegExp) {
+        if (!regExp) {
+            this.regExp = /[\s,+-._]+/;
+        }
+    }
 
     public  getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string): T[] {
-        let weightedObjects = this.generateWeightsForObjects(objectsToSearchIn, searchParameters, query.toLowerCase().split(' '));
+        let weightedObjects = this.generateWeightsForObjects(objectsToSearchIn, searchParameters, query.toLowerCase().split(this.regExp));
         return this.sortObjectsOnWeight(weightedObjects);
     }
 
@@ -82,7 +88,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
             }
             return weight;
         } else {
-            let tokenizedParameter = objectToSearch.toLowerCase().split(' ');
+            let tokenizedParameter = objectToSearch.toLowerCase().split(this.regExp);
             let weight = this.keyWordMatch(tokenizedQuery, tokenizedParameter) * weightForParam;
             if (tokenizedParameter.join('').includes(tokenizedQuery.join(''))) {
                 weight += 1;
