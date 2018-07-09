@@ -18,12 +18,14 @@ export class KeyWordSearch<T> implements ISearch<T> {
         for(let currentObject of objectsToSearchIn) {
             let weightForCurrentObject: number = 0;
             for(let currentParameter of searchParameters) {
-                let tokenizedParameter: string[] = currentObject[currentParameter.parameterName].toLowerCase().split(' ')
+                /*let tokenizedParameter: string[] = currentObject[currentParameter.parameterName].toLowerCase().split(' ')
                 weightForCurrentObject += this.keyWordMatch(tokenizedQuery, tokenizedParameter) * currentParameter.parameterWeight;
         
                 if (tokenizedParameter.join('').includes(tokenizedQuery.join(''))) {
                     weightForCurrentObject += 1;
-                }
+                }*/
+                console.log( this.recursiveDepthFirstSearch(currentObject[currentParameter.parameterName], tokenizedQuery, currentParameter.parameterWeight));
+                weightForCurrentObject += this.recursiveDepthFirstSearch(currentObject[currentParameter.parameterName], tokenizedQuery, currentParameter.parameterWeight);
             }
 
             if (weightForCurrentObject > 0) {
@@ -34,7 +36,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
         return objectsWithWeight;
     }
 
-    private keyWordMatch(tokenizedQuery: string[], tokenizedObjectParameter: string[]): number {
+    private keyWordMatch(tokenizedQuery: string[], tokenizedObjectParameter: string[]): number {  
         let hashedWords = {};
         for (let queryWord of tokenizedQuery) {
             hashedWords[queryWord] = true;
@@ -46,6 +48,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
                 matchCount++;
             }
         }
+        console.log("Match count "+matchCount);
         return matchCount;
     }
 
@@ -65,23 +68,26 @@ export class KeyWordSearch<T> implements ISearch<T> {
         return unwrappedObjects; 
     }
 
-    private recursiveDepthFirstSearch(objectToSearch, query: string, weightForMatch: number): number {
+    private recursiveDepthFirstSearch(objectToSearch, tokenizedQuery: string[], weightForParam: number): number {
         if (Array.isArray(objectToSearch)) {
             let weight = 0;
             for(let current of objectToSearch) {
-                weight += this.recursiveDepthFirstSearch(current, query, weight);
+                weight += this.recursiveDepthFirstSearch(current, tokenizedQuery, weightForParam) * weightForParam;
             }
             return weight;
         } else if (typeof objectToSearch === 'object') {
             let weight = 0;
             for(let current in objectToSearch) {
-                weight += this.recursiveDepthFirstSearch(objectToSearch[current], query, weightForMatch);
+                weight += this.recursiveDepthFirstSearch(objectToSearch[current], tokenizedQuery, weightForParam) * weightForParam;
             }
             return weight;
         } else {
-            if (objectToSearch === query) {
-                return weightForMatch;
+            let tokenizedParameter = objectToSearch.toLowerCase().split(' ');
+            let weight = this.keyWordMatch(tokenizedQuery, tokenizedParameter) * weightForParam;
+            if (tokenizedParameter.join('').includes(tokenizedQuery.join(''))) {
+                weight += 1;
             }
+            return weight;
         }
     }
 }
