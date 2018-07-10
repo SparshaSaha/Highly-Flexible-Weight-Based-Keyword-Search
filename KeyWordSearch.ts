@@ -7,6 +7,8 @@ export class KeyWordSearch<T> implements ISearch<T> {
     constructor(regExp?: RegExp) {
         if (!regExp) {
             this.regExp = /[\s,+-._]+/;
+        } else {
+            this.regExp = regExp;
         }
     }
 
@@ -35,6 +37,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
         return objectsWithWeight;
     }
 
+    // Counts number of keyword matches between object parameter and query
     private keyWordMatch(tokenizedQuery: string[], tokenizedObjectParameter: string[]): number {  
         let hashedWords = {};
         for (let queryWord of tokenizedQuery) {
@@ -66,6 +69,8 @@ export class KeyWordSearch<T> implements ISearch<T> {
         return unwrappedObjects; 
     }
 
+    // Recursively searches for a match in a given object
+    // @returns calculated weight for that object
     private recursiveDepthFirstSearch(objectToSearch, tokenizedQuery: string[], weightForParam: number): number {
         if (Array.isArray(objectToSearch)) {
             let weight = 0;
