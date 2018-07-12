@@ -3,6 +3,7 @@
         "emitDecoratorMetadata": true,
         "module": "commonjs",
         "target": "ES5",
+        "lib": ["es6", "dom", "es2017"],
         "outDir": "ts-built"
     }
 }
