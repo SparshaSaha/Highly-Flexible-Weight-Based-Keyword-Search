@@ -15,5 +15,3 @@ for (let i = 0; i < 10; i++) {
 }
 let res = new KeyWordSearch<TestObjects>().getSearchResults(arr,[new SearchParameter('title', 10)], "5");
 console.log(JSON.stringify(res));
-
-let f = new KeyWordSearch();
