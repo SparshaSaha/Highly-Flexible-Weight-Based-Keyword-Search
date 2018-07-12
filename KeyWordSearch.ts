@@ -85,7 +85,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
             }
             return weight;
         } else {
-            let tokenizedParameter = objectToSearch.toLowerCase().split(this.regExp);
+            let tokenizedParameter = objectToSearch.toString().toLowerCase().split(this.regExp);
             let weight = this.keyWordMatch(tokenizedQuery, tokenizedParameter) * weightForParam;
             if (tokenizedParameter.join('').includes(tokenizedQuery.join(''))) {
                 weight += 1;
