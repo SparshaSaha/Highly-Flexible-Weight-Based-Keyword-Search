@@ -13,3 +13,6 @@ It then inserts the query words into a map and loops through the tokenized words
 This step is done for all objects and then the objects are sorted in the descending order of calculated weights.
 
 So basically, the results with the highest weights are the results which are nearest to the query
+
+# Usage
+
