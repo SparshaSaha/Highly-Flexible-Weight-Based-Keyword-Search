@@ -85,7 +85,7 @@ Thus object1 is given higher priority than object2
 # Usage
 ##### 1> Import the KeywordSearch file ( Example: import { KeyWordSearch} from "./KeyWordSearch"; )
 ##### 2> Create a search parameter array
-##### 3> Create a KeyWordSearch\<T\> object and pass in a regular expression (used to separate words). This is optional. If nothing is passed, it assumes a default RegularExpression : /[\s,+-._]+/ . Pass the object you are conducting your search upon in place of T. For more details look in the test.ts file
+##### 3> Create a KeyWordSearch\<T\> object and pass in a regular expression (used to separate words). This is optional. If nothing is passed, it assumes a default RegularExpression : /[\s,+-._]+/ . Pass the name of the class you are conducting your search upon in place of T. For more details look in the test.ts file
 
 ##### 4> Call getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string)
 ##### 5> The getSearchResults() function returns the array of the filtered objects sorted on the descending order of weights
