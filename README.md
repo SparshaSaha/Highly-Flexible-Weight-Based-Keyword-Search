@@ -2,7 +2,7 @@
 A module in 100% typescript used to provide efficient client side searching. It uses weight based KeyWord Search to search across a given object
 
 # How it works
-KeyWord Search takes in a query, an array of objects and a list of search paramters. (Look in examples secttion for a better understanding)
+KeyWord Search takes in a query, an array of objects and a list of search paramters. (Look in examples section for a better understanding)
 
 The array may contain objects of any type and it even supports nested object searching. (Look in examples for a better understanding)
 
