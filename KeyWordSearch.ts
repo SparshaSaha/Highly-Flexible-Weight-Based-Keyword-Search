@@ -36,16 +36,13 @@ export class KeyWordSearch<T> implements ISearch<T> {
         let objectsWithWeight: ObjectWithWeight<T>[] = []; 
 
         for(let currentObject of objectsToSearchIn) {
-
             let weightForCurrentObject: number = 0;
 
             for(let currentParameter of searchParameters) {
-                
                 weightForCurrentObject += this.recursiveDepthFirstSearch(currentObject[currentParameter.parameterName], tokenizedQuery, currentParameter.parameterWeight);
             }
 
             if (weightForCurrentObject > 0) {
-
                 let objectWithWeight = new ObjectWithWeight<T>(currentObject, weightForCurrentObject);
 
                 objectsWithWeight.push(objectWithWeight);
@@ -66,7 +63,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
         let matchCount: number = 0;
 
         for (let currentWord of tokenizedObjectParameter) {
-            
+
             if (hashedWords[currentWord] == true) {
                 matchCount++;
             }
