@@ -1,7 +1,7 @@
-import { BuildWordTree } from "./BuildWordTree";
+import { WordTreeUtils } from "./WordTreeUtils";
 import { WordTreeNode } from "./WordTreeNode";
 
-let temp = new BuildWordTree();
+let temp = new WordTreeUtils();
 
 let str = ["cool","cock"];
 

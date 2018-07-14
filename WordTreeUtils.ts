@@ -1,8 +1,9 @@
 import { WordTreeNode } from "./WordTreeNode";
 
-export class BuildWordTree {
+export class WordTreeUtils {
 
     public buildTree(words: string[]): WordTreeNode {
+
         let currentNode: WordTreeNode = new WordTreeNode();
         let head: WordTreeNode = currentNode;
 
@@ -20,12 +21,17 @@ export class BuildWordTree {
         return head;
     }
 
-    public checkPresence(word: string) {
-        
-    }
-
     private getArrayIndexMapping(character: string): number {
         
         return character.charCodeAt(0) - 97;
+    }
+
+    public checkPresenceInTree(head: WordTreeNode, word: string, index: number): number {
+
+        if (head.characterLinks[this.getArrayIndexMapping(word[index])] == undefined || index == word.length) {
+            return 0;
+        }
+
+        return this.checkPresenceInTree(head.characterLinks[this.getArrayIndexMapping(word[index])], word, index + 1) + 1;
     }
 }
