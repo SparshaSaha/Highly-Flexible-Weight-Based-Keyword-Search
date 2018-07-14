@@ -28,7 +28,7 @@ export class WordTreeUtils {
 
     public checkPresenceInTree(head: WordTreeNode, word: string, index: number): number {
 
-        if (head.characterLinks[this.getArrayIndexMapping(word[index])] == undefined || index == word.length) {
+        if (index == word.length || head.characterLinks[this.getArrayIndexMapping(word[index])] == undefined) {
             return 0;
         }
 
