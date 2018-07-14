@@ -20,6 +20,10 @@ export class BuildWordTree {
         return head;
     }
 
+    public checkPresence(word: string) {
+        
+    }
+
     private getArrayIndexMapping(character: string): number {
         
         return character.charCodeAt(0) - 97;
