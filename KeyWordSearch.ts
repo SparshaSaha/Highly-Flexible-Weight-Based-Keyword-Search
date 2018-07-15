@@ -5,9 +5,9 @@ import { ISearch } from "./ISearch.interface";
 export class KeyWordSearch<T> implements ISearch<T> {
 
     private regExp: RegExp;
-    private accurateSearch: boolean;
+    private searchFunction;
 
-    constructor(regExp?: RegExp, accurateSearch?: boolean) {
+    constructor(accurateSearch?: boolean, regExp?: RegExp) {
 
         if (!regExp) {
             this.regExp = /[\s,+-._]+/;
@@ -16,13 +16,13 @@ export class KeyWordSearch<T> implements ISearch<T> {
         }
 
         if (!accurateSearch) {
-            this.accurateSearch = false;
+            this.searchFunction = this.recursiveDepthFirstSearch;
         } else {
-            accurateSearch = true;
+            this.searchFunction = this.recursiveDepthFirstSearchAccurate;
         }
     }
 
-    public  getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string): T[] {
+    public getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string): T[] {
 
         let weightedObjects = this.generateWeightsForObjects(objectsToSearchIn, searchParameters, query.toLowerCase().split(this.regExp));
         return this.sortObjectsOnWeight(weightedObjects);
@@ -39,7 +39,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
             let weightForCurrentObject: number = 0;
 
             for(let currentParameter of searchParameters) {
-                weightForCurrentObject += this.recursiveDepthFirstSearch(currentObject[currentParameter.parameterName], tokenizedQuery, currentParameter.parameterWeight);
+                weightForCurrentObject += this.searchFunction(currentObject[currentParameter.parameterName], tokenizedQuery, currentParameter.parameterWeight);
             }
 
             if (weightForCurrentObject > 0) {
@@ -122,5 +122,9 @@ export class KeyWordSearch<T> implements ISearch<T> {
 
             return weight;
         }
+    }
+
+    private recursiveDepthFirstSearchAccurate() {
+
     }
 }
