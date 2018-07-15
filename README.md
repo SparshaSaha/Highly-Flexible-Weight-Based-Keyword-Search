@@ -2,7 +2,7 @@
 A module in 100% typescript used to provide efficient client side searching. It uses weight based KeyWord Search to search across a given object
 
 # How it works
-KeyWord Search takes in a query, an array of objects and a list of search paramters. (Look in examples secttion for a better understanding)
+KeyWord Search takes in a query, an array of objects and a list of search paramters. (Look in examples section for a better understanding)
 
 The array may contain objects of any type and it even supports nested object searching. (Look in examples for a better understanding)
 
@@ -85,7 +85,7 @@ Thus object1 is given higher priority than object2
 # Usage
 ##### 1> Import the KeywordSearch file ( Example: import { KeyWordSearch} from "./KeyWordSearch"; )
 ##### 2> Create a search parameter array
-##### 3> Create a KeyWordSearch\<T\> object and pass in a regular expression (used to separate words). This is optional. If nothing is passed, it assumes a default RegularExpression : /[\s,+-._]+/ . Pass the object you are conducting your search upon in place of T. For more details look in the test.ts file
+##### 3> Create a KeyWordSearch\<T\> object and pass in a regular expression (used to separate words). This is optional. If nothing is passed, it assumes a default RegularExpression : /[\s,+-._]+/ . Pass the name of the class you are conducting your search upon in place of T. For more details look in the test.ts file
 
 ##### 4> Call getSearchResults(objectsToSearchIn: T[], searchParameters: SearchParameter[], query: string)
 ##### 5> The getSearchResults() function returns the array of the filtered objects sorted on the descending order of weights
