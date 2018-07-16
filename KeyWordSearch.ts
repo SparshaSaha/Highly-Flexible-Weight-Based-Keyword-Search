@@ -6,9 +6,11 @@ export class KeyWordSearch<T> implements ISearch<T> {
 
     private regExp: RegExp;
     private searchFunction;
+    private arrayOfStrings: string[];
 
     constructor(accurateSearch?: boolean, regExp?: RegExp) {
 
+        this.arrayOfStrings = [];
         if (!regExp) {
             this.regExp = /[\s,+-._]+/;
         } else {
@@ -125,7 +127,31 @@ export class KeyWordSearch<T> implements ISearch<T> {
     }
 
     private extractWordsAndSearch(objectToSearch, tokenizedQuery: string[], weightForParam: number) {
-        
-        
+        this.recursivelyGetStrings(objectToSearch);
+        console.log(this.arrayOfStrings);
+        this.arrayOfStrings = [];
+    }
+
+    private recursivelyGetStrings(objectToSearch) {
+
+        if (Array.isArray(objectToSearch)) {
+
+            for(let current of objectToSearch) {
+                this.recursivelyGetStrings(current) ;
+            }
+
+        } else if (typeof objectToSearch === 'object') {
+
+            for(let current in objectToSearch) {
+                this.recursivelyGetStrings(objectToSearch[current]);
+            }
+
+        } else {
+
+            let tokenizedParameter = objectToSearch.toString().toLowerCase().split(this.regExp);
+            for (let word of tokenizedParameter) {
+                this.arrayOfStrings.push(word);
+            }
+        }
     }
 }
