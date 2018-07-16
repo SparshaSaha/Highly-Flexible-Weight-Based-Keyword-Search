@@ -18,7 +18,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
         if (!accurateSearch) {
             this.searchFunction = this.recursiveDepthFirstSearch;
         } else {
-            this.searchFunction = this.recursiveDepthFirstSearchAccurate;
+            this.searchFunction = this.extractWordsAndSearch;
         }
     }
 
@@ -124,7 +124,8 @@ export class KeyWordSearch<T> implements ISearch<T> {
         }
     }
 
-    private recursiveDepthFirstSearchAccurate() {
-
+    private extractWordsAndSearch(objectToSearch, tokenizedQuery: string[], weightForParam: number) {
+        
+        
     }
 }
