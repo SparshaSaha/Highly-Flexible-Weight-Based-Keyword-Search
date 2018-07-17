@@ -128,6 +128,8 @@ export class KeyWordSearch<T> implements ISearch<T> {
         }
     }
 
+    // Extract all words for the particular parameter and calculate weights
+    // @returns calculated weights
     private extractWordsAndSearch(objectToSearch, tokenizedQuery: string[], weightForParam: number): number {
 
         this.recursivelyGetStrings(objectToSearch);
@@ -144,6 +146,7 @@ export class KeyWordSearch<T> implements ISearch<T> {
         return matchCount * weightForParam;
     }
 
+    // Recursively find all strings and put them in an array
     private recursivelyGetStrings(objectToSearch): void {
 
         if (Array.isArray(objectToSearch)) {
