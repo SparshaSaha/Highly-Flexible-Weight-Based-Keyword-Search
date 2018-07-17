@@ -1,6 +1,8 @@
 import { ObjectWithWeight } from "./ObjectWithWeight";
 import { SearchParameter } from "./SearchParameter";
 import { ISearch } from "./ISearch.interface";
+import { WordTreeUtils } from "./WordTreeUtils";
+import { WordTreeNode } from "./WordTreeNode";
 
 export class KeyWordSearch<T> implements ISearch<T> {
 
@@ -126,13 +128,23 @@ export class KeyWordSearch<T> implements ISearch<T> {
         }
     }
 
-    private extractWordsAndSearch(objectToSearch, tokenizedQuery: string[], weightForParam: number) {
+    private extractWordsAndSearch(objectToSearch, tokenizedQuery: string[], weightForParam: number): number {
+
         this.recursivelyGetStrings(objectToSearch);
-        console.log(this.arrayOfStrings);
+        let wordTreeutils = new WordTreeUtils();
+        let head: WordTreeNode = wordTreeutils.buildTree(this.arrayOfStrings);
+        
+        let matchCount = 0;
+        for (let tokenizedQueryWord of tokenizedQuery) {
+            if (wordTreeutils.checkPresenceInTree(head, tokenizedQueryWord, 0) == tokenizedQueryWord.length) {
+                matchCount++;
+            }
+        }
         this.arrayOfStrings = [];
+        return matchCount * weightForParam;
     }
 
-    private recursivelyGetStrings(objectToSearch) {
+    private recursivelyGetStrings(objectToSearch): void {
 
         if (Array.isArray(objectToSearch)) {
 
